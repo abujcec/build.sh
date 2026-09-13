@@ -23,7 +23,7 @@ fi
 
 # Build environment setup
 source build/envsetup.sh
-lunch lineage_${DEVICE}-userdebug
+lunch lineage_${DEVICE}-ap4a-userdebug
 
 # Run compilation
 mka bacon -j$(nproc --all)
