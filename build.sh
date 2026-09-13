@@ -24,6 +24,12 @@ if [ ! -d "device/xiaomi/veux" ]; then
     git clone https://github.com/xiaomi-sm6375-devs/android_kernel_xiaomi_sm6375.git kernel/xiaomi/sm6375 --depth=1
 fi
 
+# Clone vendor blobs
+if [ ! -d "vendor/xiaomi/veux" ]; then
+    echo "Vendor missing! Extracting..."
+    git clone https://github.com/xiaomi-sm6375-devs/android_device_xiaomi_veux.git vendor/xiaomi/veux --depth=1
+fi
+
 source build/envsetup.sh
 lunch lineage_${DEVICE}-ap4a-userdebug
 mka bacon -j$(nproc --all)
