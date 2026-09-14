@@ -27,8 +27,7 @@ fi
 # Get vendor blobs
 if [ ! -d "vendor/xiaomi/veux" ]; then
     echo "Getting vendor blobs..."
-    mkdir -p vendor_dump/vendor
-    wget --no-check-certificate "https://drive.google.com/uc?export=download&id=14gZlIb5q4BYgShBmo7F4G499x09Qs972" -O vendor.img
+    wget --no-check-certificate "https://drive.usercontent.google.com/download?id=14gZlIb5q4BYgShBmo7F4G499x09Qs972&export=download&confirm=t" -O vendor.img
     sudo apt-get install -y e2fsprogs
     mkdir -p vendor_dump/vendor
     debugfs -R "rdump / vendor_dump/vendor" vendor.img
