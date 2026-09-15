@@ -15,7 +15,6 @@ fi
 
 /opt/crave/resync.sh
 
-# Check if device tree exists BEFORE building
 if [ ! -d "device/xiaomi/veux" ]; then
     echo "Device tree missing! Cloning manually..."
     git clone https://github.com/xiaomi-sm6375-devs/android_device_xiaomi_veux.git device/xiaomi/veux -b lineage-23.2 --depth=1
@@ -24,16 +23,15 @@ if [ ! -d "device/xiaomi/veux" ]; then
     git clone https://github.com/xiaomi-sm6375-devs/android_kernel_xiaomi_sm6375.git kernel/xiaomi/sm6375 --depth=1
 fi
 
-# Get vendor blobs
 if [ ! -d "vendor/xiaomi/veux" ]; then
     echo "Getting vendor blobs..."
     wget --no-check-certificate "https://drive.usercontent.google.com/download?id=14gZlIb5q4BYgShBmo7F4G499x09Qs972&export=download&confirm=t" -O vendor.img
     sudo apt-get install -y e2fsprogs
     mkdir -p vendor_dump/vendor
     debugfs -R "rdump / vendor_dump/vendor" vendor.img
-    PYTHONPATH=tools/extract-utils python3 device/xiaomi/veux/extract-files.py vendor_dump
-    PYTHONPATH=tools/extract-utils python3 device/xiaomi/veux/extract-files.py -m
-    PYTHONPATH=tools/extract-utils python3 device/xiaomi/sm6375-common/extract-files.py -m
+    PYTHONPATH=tools/extract-utils python3 device/xiaomi/veux/extract-files.py vendor_dump || true
+    PYTHONPATH=tools/extract-utils python3 device/xiaomi/veux/extract-files.py -m || true
+    PYTHONPATH=tools/extract-utils python3 device/xiaomi/sm6375-common/extract-files.py -m || true
     rm -f vendor.img
 fi
 
