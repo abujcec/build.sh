@@ -21,9 +21,14 @@ if [ ! -d "device/xiaomi/veux" ]; then
     git clone https://github.com/xiaomi-sm6375-devs/android_device_xiaomi_sm6375-common.git device/xiaomi/sm6375-common --depth=1
     git clone https://github.com/LineageOS/android_hardware_xiaomi.git hardware/xiaomi -b lineage-23.2 --depth=1
     git clone https://github.com/xiaomi-sm6375-devs/android_kernel_xiaomi_sm6375.git kernel/xiaomi/sm6375 --depth=1
+    # Fix kernel config
+    sed -i 's/TARGET_KERNEL_CONFIG := veux_defconfig/TARGET_KERNEL_CONFIG := gki_defconfig vendor\/holi_GKI.config/' device/xiaomi/veux/BoardConfig.mk
 fi
 
-sed -i 's/TARGET_KERNEL_CONFIG := veux_defconfig/TARGET_KERNEL_CONFIG := gki_defconfig vendor\/holi_GKI.config/' device/xiaomi/veux/BoardConfig.mk
+# Fix UprobeStats SDK version issue
+if [ -f "packages/modules/UprobeStats/service/aidl/Android.bp" ]; then
+    sed -i 's/version: 36/version: 35/g' packages/modules/UprobeStats/service/aidl/Android.bp
+fi
 
 if [ ! -d "vendor/xiaomi/veux" ]; then
     echo "Getting vendor blobs..."
