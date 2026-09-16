@@ -26,9 +26,7 @@ if [ ! -d "device/xiaomi/veux" ]; then
 fi
 
 # Fix UprobeStats SDK version issue
-if [ -f "packages/modules/UprobeStats/service/aidl/Android.bp" ]; then
-    sed -i 's/version: 36/version: 35/g' packages/modules/UprobeStats/service/aidl/Android.bp
-fi
+rm -rf packages/modules/UprobeStats
 
 if [ ! -d "vendor/xiaomi/veux" ]; then
     echo "Getting vendor blobs..."
