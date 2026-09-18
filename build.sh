@@ -25,8 +25,9 @@ if [ ! -d "device/xiaomi/veux" ]; then
     sed -i 's/TARGET_KERNEL_CONFIG := veux_defconfig/TARGET_KERNEL_CONFIG := gki_defconfig vendor\/holi_GKI.config/' device/xiaomi/veux/BoardConfig.mk
 fi
 
-# Fix UprobeStats SDK version issue
+# Fix UprobeStats and its dependencies
 rm -rf packages/modules/UprobeStats
+rm -rf cts/hostsidetests/statsdatom
 
 if [ ! -d "vendor/xiaomi/veux" ]; then
     echo "Getting vendor blobs..."
