@@ -26,8 +26,7 @@ fi
 
 # Fix UprobeStats
 rm -rf packages/modules/UprobeStats
-sed -i '/"uprobestats_mainline_flags_java_lib_test_host"/d' cts/hostsidetests/statsdatom/Android.bp || true
-sed -i '/"uprobestats-protos"/d' cts/hostsidetests/statsdatom/Android.bp || true
+find cts/hostsidetests/statsdatom -name "Android.bp" -exec sed -i '/"uprobestats/d' {} \; || true
 
 if [ ! -d "vendor/xiaomi/veux" ]; then
     echo "Getting vendor blobs..."
