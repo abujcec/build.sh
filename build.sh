@@ -24,7 +24,8 @@ if [ ! -d "device/xiaomi/veux" ]; then
     sed -i 's/TARGET_KERNEL_CONFIG := veux_defconfig/TARGET_KERNEL_CONFIG := gki_defconfig vendor\/holi_GKI.config/' device/xiaomi/veux/BoardConfig.mk
 fi
 
-# Fix UprobeStats
+# Fix UprobeStats - restore statsdatom first then patch it
+git -C cts/hostsidetests/statsdatom checkout HEAD -- . 2>/dev/null || true
 rm -rf packages/modules/UprobeStats
 find cts/hostsidetests/statsdatom -name "Android.bp" -exec sed -i '/"uprobestats/d' {} \; || true
 
