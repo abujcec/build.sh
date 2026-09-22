@@ -24,10 +24,10 @@ if [ ! -d "device/xiaomi/veux" ]; then
     sed -i 's/TARGET_KERNEL_CONFIG := veux_defconfig/TARGET_KERNEL_CONFIG := gki_defconfig vendor\/holi_GKI.config/' device/xiaomi/veux/BoardConfig.mk
 fi
 
-# Fix UprobeStats - restore statsdatom first then patch it
-git -C cts/hostsidetests/statsdatom checkout HEAD -- . 2>/dev/null || true
+# Fix UprobeStats dependency chain
 rm -rf packages/modules/UprobeStats
-find cts/hostsidetests/statsdatom -name "Android.bp" -exec sed -i '/"uprobestats/d' {} \; || true
+grep -rl "cts-statsd-atom-host-test-utils" --include="Android.bp" --exclude-dir=out --exclude-dir=.repo . 2>/dev/null | xargs --no-run-if-empty sed -i '/"cts-statsd-atom-host-test-utils"/d' || true
+grep -rl "uprobestats" --include="Android.bp" --exclude-dir=out --exclude-dir=.repo . 2>/dev/null | xargs --no-run-if-empty sed -i '/"uprobestats/d' || true
 
 if [ ! -d "vendor/xiaomi/veux" ]; then
     echo "Getting vendor blobs..."
