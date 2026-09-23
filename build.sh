@@ -28,6 +28,7 @@ fi
 rm -rf packages/modules/UprobeStats
 grep -rl "cts-statsd-atom-host-test-utils" --include="Android.bp" --exclude-dir=out --exclude-dir=.repo . 2>/dev/null | xargs --no-run-if-empty sed -i '/"cts-statsd-atom-host-test-utils"/d' || true
 grep -rl "uprobestats" --include="Android.bp" --exclude-dir=out --exclude-dir=.repo . 2>/dev/null | xargs --no-run-if-empty sed -i '/"uprobestats/d' || true
+sed -i '/"libuprobestats_client"/d' packages/modules/StatsD/statsd/Android.bp || true
 
 if [ ! -d "vendor/xiaomi/veux" ]; then
     echo "Getting vendor blobs..."
@@ -42,5 +43,5 @@ if [ ! -d "vendor/xiaomi/veux" ]; then
 fi
 
 source build/envsetup.sh
-lunch lineage_${DEVICE}-ap4a-userdebug
+lunch lineage_${DEVICE}-bp4a-userdebug
 mka bacon -j$(nproc --all)
