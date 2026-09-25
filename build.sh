@@ -30,6 +30,9 @@ grep -rl "cts-statsd-atom-host-test-utils" --include="Android.bp" --exclude-dir=
 grep -rl "uprobestats" --include="Android.bp" --exclude-dir=out --exclude-dir=.repo . 2>/dev/null | xargs --no-run-if-empty sed -i '/"uprobestats/d' || true
 sed -i '/"libuprobestats_client"/d' packages/modules/StatsD/statsd/Android.bp || true
 
+# Fix libgf_ca missing libQSEEComAPI
+sed -i '/"libQSEEComAPI"/d' vendor/xiaomi/veux/Android.bp || true
+
 if [ ! -d "vendor/xiaomi/veux" ]; then
     echo "Getting vendor blobs..."
     wget --no-check-certificate "https://drive.usercontent.google.com/download?id=14gZlIb5q4BYgShBmo7F4G499x09Qs972&export=download&confirm=t" -O vendor.img
@@ -43,5 +46,5 @@ if [ ! -d "vendor/xiaomi/veux" ]; then
 fi
 
 source build/envsetup.sh
-lunch lineage_${DEVICE}-bp4a-userdebug
+lunch lineage_${DEVICE}-ap4a-userdebug
 mka bacon -j$(nproc --all)
