@@ -33,6 +33,9 @@ sed -i '/"libuprobestats_client"/d' packages/modules/StatsD/statsd/Android.bp ||
 # Fix libgf_ca missing libQSEEComAPI
 sed -i '/"libQSEEComAPI"/d' vendor/xiaomi/veux/Android.bp || true
 
+# Fix SDK version 36 not available
+grep -rl 'sdk_version.*36' --include="Android.bp" --exclude-dir=out --exclude-dir=.repo . 2>/dev/null | xargs --no-run-if-empty sed -i 's/sdk_version: "36"/sdk_version: "35"/g' || true
+
 if [ ! -d "vendor/xiaomi/veux" ]; then
     echo "Getting vendor blobs..."
     wget --no-check-certificate "https://drive.usercontent.google.com/download?id=14gZlIb5q4BYgShBmo7F4G499x09Qs972&export=download&confirm=t" -O vendor.img
