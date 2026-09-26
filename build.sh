@@ -30,9 +30,6 @@ grep -rl "cts-statsd-atom-host-test-utils" --include="Android.bp" --exclude-dir=
 grep -rl "uprobestats" --include="Android.bp" --exclude-dir=out --exclude-dir=.repo . 2>/dev/null | xargs --no-run-if-empty sed -i '/"uprobestats/d' || true
 sed -i '/"libuprobestats_client"/d' packages/modules/StatsD/statsd/Android.bp || true
 
-# Fix libgf_ca missing libQSEEComAPI
-sed -i '/"libQSEEComAPI"/d' vendor/xiaomi/veux/Android.bp || true
-
 # Fix SDK version 36 not available
 grep -rl 'sdk_version.*36' --include="Android.bp" --exclude-dir=out --exclude-dir=.repo . 2>/dev/null | xargs --no-run-if-empty sed -i 's/sdk_version: "36"/sdk_version: "35"/g' || true
 
@@ -47,6 +44,10 @@ if [ ! -d "vendor/xiaomi/veux" ]; then
     PYTHONPATH=tools/extract-utils python3 device/xiaomi/sm6375-common/extract-files.py -m || true
     rm -f vendor.img
 fi
+
+# Fix missing Qualcomm proprietary libraries in vendor blobs
+sed -i '/"libQSEEComAPI"/d' vendor/xiaomi/veux/Android.bp || true
+sed -i '/"libcdsprpc"/d' vendor/xiaomi/veux/Android.bp || true
 
 source build/envsetup.sh
 lunch lineage_${DEVICE}-ap4a-userdebug
