@@ -45,9 +45,19 @@ if [ ! -d "vendor/xiaomi/veux" ]; then
     rm -f vendor.img
 fi
 
-# Fix missing Qualcomm proprietary libraries in vendor blobs
+# Fix all missing proprietary library dependencies in vendor
 sed -i '/"libQSEEComAPI"/d' vendor/xiaomi/veux/Android.bp || true
 sed -i '/"libcdsprpc"/d' vendor/xiaomi/veux/Android.bp || true
+sed -i '/"libsensorslog"/d' vendor/xiaomi/veux/Android.bp || true
+sed -i '/"libGPTEE_vendor"/d' vendor/xiaomi/veux/Android.bp || true
+sed -i '/"libfastcvopt"/d' vendor/xiaomi/veux/Android.bp || true
+sed -i '/"libfastcvdsp_stub"/d' vendor/xiaomi/veux/Android.bp || true
+sed -i '/"libscveCommon"/d' vendor/xiaomi/veux/Android.bp || true
+sed -i '/"libscveCommon_stub"/d' vendor/xiaomi/veux/Android.bp || true
+sed -i '/"libscveObjectTracker"/d' vendor/xiaomi/veux/Android.bp || true
+sed -i '/"libscveObjectTracker_stub"/d' vendor/xiaomi/veux/Android.bp || true
+sed -i '/"libscveObjectSegmentation"/d' vendor/xiaomi/veux/Android.bp || true
+sed -i '/"libscveObjectSegmentation_stub"/d' vendor/xiaomi/veux/Android.bp || true
 
 source build/envsetup.sh
 lunch lineage_${DEVICE}-ap4a-userdebug
