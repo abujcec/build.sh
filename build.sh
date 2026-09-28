@@ -45,7 +45,7 @@ if [ ! -d "vendor/xiaomi/veux" ]; then
     rm -f vendor.img
 fi
 
-# Fix all missing proprietary library dependencies in vendor
+# Fix all missing proprietary library dependencies in vendor/xiaomi/veux
 sed -i '/"libQSEEComAPI"/d' vendor/xiaomi/veux/Android.bp || true
 sed -i '/"libcdsprpc"/d' vendor/xiaomi/veux/Android.bp || true
 sed -i '/"libsensorslog"/d' vendor/xiaomi/veux/Android.bp || true
@@ -58,6 +58,9 @@ sed -i '/"libscveObjectTracker"/d' vendor/xiaomi/veux/Android.bp || true
 sed -i '/"libscveObjectTracker_stub"/d' vendor/xiaomi/veux/Android.bp || true
 sed -i '/"libscveObjectSegmentation"/d' vendor/xiaomi/veux/Android.bp || true
 sed -i '/"libscveObjectSegmentation_stub"/d' vendor/xiaomi/veux/Android.bp || true
+
+# Fix missing libs in vendor/xiaomi/sm6375-common
+sed -i '/"libbluetooth_audio_session_qti_2_1"/d' vendor/xiaomi/sm6375-common/Android.bp || true
 
 source build/envsetup.sh
 lunch lineage_${DEVICE}-ap4a-userdebug
