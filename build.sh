@@ -45,22 +45,11 @@ if [ ! -d "vendor/xiaomi/veux" ]; then
     rm -f vendor.img
 fi
 
-# Fix all missing proprietary library dependencies in vendor/xiaomi/veux
-sed -i '/"libQSEEComAPI"/d' vendor/xiaomi/veux/Android.bp || true
-sed -i '/"libcdsprpc"/d' vendor/xiaomi/veux/Android.bp || true
-sed -i '/"libsensorslog"/d' vendor/xiaomi/veux/Android.bp || true
-sed -i '/"libGPTEE_vendor"/d' vendor/xiaomi/veux/Android.bp || true
-sed -i '/"libfastcvopt"/d' vendor/xiaomi/veux/Android.bp || true
-sed -i '/"libfastcvdsp_stub"/d' vendor/xiaomi/veux/Android.bp || true
-sed -i '/"libscveCommon"/d' vendor/xiaomi/veux/Android.bp || true
-sed -i '/"libscveCommon_stub"/d' vendor/xiaomi/veux/Android.bp || true
-sed -i '/"libscveObjectTracker"/d' vendor/xiaomi/veux/Android.bp || true
-sed -i '/"libscveObjectTracker_stub"/d' vendor/xiaomi/veux/Android.bp || true
-sed -i '/"libscveObjectSegmentation"/d' vendor/xiaomi/veux/Android.bp || true
-sed -i '/"libscveObjectSegmentation_stub"/d' vendor/xiaomi/veux/Android.bp || true
-
-# Fix missing libs in vendor/xiaomi/sm6375-common
-sed -i '/"libbluetooth_audio_session_qti_2_1"/d' vendor/xiaomi/sm6375-common/Android.bp || true
+# Remove all undefined Qualcomm proprietary lib dependencies from vendor
+for lib in libQSEEComAPI libcdsprpc libsensorslog libGPTEE_vendor libfastcvopt libfastcvdsp_stub libscveCommon libscveCommon_stub libscveObjectTracker libscveObjectTracker_stub libscveObjectSegmentation libscveObjectSegmentation_stub libsnsapi libssc libsnsdiaglog libsns_fastRPC_util libbluetooth_audio_session_qti_2_1; do
+    sed -i "/\"${lib}\"/d" vendor/xiaomi/veux/Android.bp || true
+    sed -i "/\"${lib}\"/d" vendor/xiaomi/sm6375-common/Android.bp || true
+done
 
 source build/envsetup.sh
 lunch lineage_${DEVICE}-ap4a-userdebug
