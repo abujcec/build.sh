@@ -24,11 +24,11 @@ if [ ! -d "device/xiaomi/veux" ]; then
     sed -i 's/TARGET_KERNEL_CONFIG := veux_defconfig/TARGET_KERNEL_CONFIG := gki_defconfig vendor\/holi_GKI.config/' device/xiaomi/veux/BoardConfig.mk
 fi
 
-# Fix UprobeStats dependency chain
+# Fix UprobeStats dependency chain everywhere
 rm -rf packages/modules/UprobeStats
 grep -rl "cts-statsd-atom-host-test-utils" --include="Android.bp" --exclude-dir=out --exclude-dir=.repo . 2>/dev/null | xargs --no-run-if-empty sed -i '/"cts-statsd-atom-host-test-utils"/d' || true
 grep -rl "uprobestats" --include="Android.bp" --exclude-dir=out --exclude-dir=.repo . 2>/dev/null | xargs --no-run-if-empty sed -i '/"uprobestats/d' || true
-sed -i '/"libuprobestats_client"/d' packages/modules/StatsD/statsd/Android.bp || true
+grep -rl "libuprobestats_client" --include="Android.bp" --exclude-dir=out --exclude-dir=.repo . 2>/dev/null | xargs --no-run-if-empty sed -i '/"libuprobestats_client"/d' || true
 
 # Fix SDK version 36 not available
 grep -rl 'sdk_version.*36' --include="Android.bp" --exclude-dir=out --exclude-dir=.repo . 2>/dev/null | xargs --no-run-if-empty sed -i 's/sdk_version: "36"/sdk_version: "35"/g' || true
@@ -46,7 +46,7 @@ if [ ! -d "vendor/xiaomi/veux" ]; then
 fi
 
 # Remove all undefined Qualcomm proprietary lib dependencies from vendor
-for lib in libQSEEComAPI libcdsprpc libsensorslog libGPTEE_vendor libfastcvopt libfastcvdsp_stub libscveCommon libscveCommon_stub libscveObjectTracker libscveObjectTracker_stub libscveObjectSegmentation libscveObjectSegmentation_stub libsnsapi libssc libsnsdiaglog libsns_fastRPC_util libbluetooth_audio_session_qti_2_1; do
+for lib in libQSEEComAPI libcdsprpc libsensorslog libGPTEE_vendor libfastcvopt libfastcvdsp_stub libscveCommon libscveCommon_stub libscveObjectTracker libscveObjectTracker_stub libscveObjectSegmentation libscveObjectSegmentation_stub libsnsapi libssc libsnsdiaglog libsns_fastRPC_util libbluetooth_audio_session_qti_2_1 libbluetooth_audio_session_qti; do
     sed -i "/\"${lib}\"/d" vendor/xiaomi/veux/Android.bp || true
     sed -i "/\"${lib}\"/d" vendor/xiaomi/sm6375-common/Android.bp || true
 done
