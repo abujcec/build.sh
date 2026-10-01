@@ -46,7 +46,7 @@ if [ ! -d "vendor/xiaomi/veux" ]; then
 fi
 
 # Remove all undefined Qualcomm proprietary lib dependencies from vendor
-for lib in libQSEEComAPI libcdsprpc libsensorslog libGPTEE_vendor libfastcvopt libfastcvdsp_stub libscveCommon libscveCommon_stub libscveObjectTracker libscveObjectTracker_stub libscveObjectSegmentation libscveObjectSegmentation_stub libsnsapi libssc libsnsdiaglog libsns_fastRPC_util libbluetooth_audio_session_qti_2_1 libbluetooth_audio_session_qti; do
+for lib in libQSEEComAPI libcdsprpc libsensorslog libGPTEE_vendor libfastcvopt libfastcvdsp_stub libscveCommon libscveCommon_stub libscveObjectTracker libscveObjectTracker_stub libscveObjectSegmentation libscveObjectSegmentation_stub libsnsapi libssc libsnsdiaglog libsns_fastRPC_util libbluetooth_audio_session_qti_2_1 libbluetooth_audio_session_qti libqmi_cci libqmi_common_so libqmi_encdec "vendor.qti.hardware.vpp@1.1" "vendor.qti.hardware.vpp@1.2"; do
     sed -i "/\"${lib}\"/d" vendor/xiaomi/veux/Android.bp || true
     sed -i "/\"${lib}\"/d" vendor/xiaomi/sm6375-common/Android.bp || true
 done
