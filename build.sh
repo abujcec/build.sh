@@ -45,11 +45,22 @@ if [ ! -d "vendor/xiaomi/veux" ]; then
     rm -f vendor.img
 fi
 
-# Remove all undefined Qualcomm proprietary lib dependencies from vendor
-for lib in libQSEEComAPI libcdsprpc libsensorslog libGPTEE_vendor libfastcvopt libfastcvdsp_stub libscveCommon libscveCommon_stub libscveObjectTracker libscveObjectTracker_stub libscveObjectSegmentation libscveObjectSegmentation_stub libsnsapi libssc libsnsdiaglog libsns_fastRPC_util libbluetooth_audio_session_qti_2_1 libbluetooth_audio_session_qti libqmi_cci libqmi_common_so libqmi_encdec "vendor.qti.hardware.vpp@1.1" "vendor.qti.hardware.vpp@1.2"; do
-    sed -i "/\"${lib}\"/d" vendor/xiaomi/veux/Android.bp || true
-    sed -i "/\"${lib}\"/d" vendor/xiaomi/sm6375-common/Android.bp || true
-done
+# Nuclear fix - remove all undefined Qualcomm lib dependencies from vendor
+python3 -c "
+import re
+for f in ['vendor/xiaomi/veux/Android.bp', 'vendor/xiaomi/sm6375-common/Android.bp']:
+    try:
+        with open(f, 'r') as fp:
+            content = fp.read()
+        patterns = ['libqti', 'vendor\.qti', 'librpc', 'libsns', 'libqmi', 'libscve', 'libfastcv', 'libcdsp', 'libGPTEE', 'libQSEE', 'libbluetooth_audio_session_qti', 'libsensorslog']
+        for p in patterns:
+            content = re.sub(r'[ \t]*\"[^\"]*' + p + r'[^\"]*\",?\n', '', content)
+        with open(f, 'w') as fp:
+            fp.write(content)
+        print('Fixed ' + f)
+    except Exception as e:
+        print('Skipped ' + f + ': ' + str(e))
+" || true
 
 source build/envsetup.sh
 lunch lineage_${DEVICE}-ap4a-userdebug
