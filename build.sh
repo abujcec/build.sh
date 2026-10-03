@@ -46,16 +46,13 @@ if [ ! -d "vendor/xiaomi/veux" ]; then
 fi
 
 # Safe fix - remove only specific undefined lib lines from vendor
-for lib in libQSEEComAPI libcdsprpc libsensorslog libGPTEE_vendor libfastcvopt libfastcvdsp_stub libscveCommon libscveCommon_stub libscveObjectTracker libscveObjectTracker_stub libscveObjectSegmentation libscveObjectSegmentation_stub libsnsapi libssc libsnsdiaglog libsns_fastRPC_util libbluetooth_audio_session_qti_2_1 libbluetooth_audio_session_qti libqmi_cci libqmi_common_so libqmi_encdec libdsprpc libadsprpc libvpphvx libvppclient; do
+for lib in libQSEEComAPI libcdsprpc libsensorslog libGPTEE_vendor libfastcvopt libfastcvdsp_stub libscveCommon libscveCommon_stub libscveObjectTracker libscveObjectTracker_stub libscveObjectSegmentation libscveObjectSegmentation_stub libsnsapi libssc libsnsdiaglog libsns_fastRPC_util libbluetooth_audio_session_qti_2_1 libbluetooth_audio_session_qti libqmi_cci libqmi_common_so libqmi_encdec libdsprpc libadsprpc libvpphvx libvppclient libdataqmiservices libqmiservices libtime_genoff; do
     sed -i "/\"${lib}\"/d" vendor/xiaomi/veux/Android.bp || true
     sed -i "/\"${lib}\"/d" vendor/xiaomi/sm6375-common/Android.bp || true
 done
 
-# Fix vendor.qti HAL references
-sed -i '/"vendor\.qti\.hardware\.vpp@1\.1"/d' vendor/xiaomi/veux/Android.bp || true
-sed -i '/"vendor\.qti\.hardware\.vpp@1\.2"/d' vendor/xiaomi/veux/Android.bp || true
-sed -i '/"vendor\.qti\.hardware\.vpp@1\.1"/d' vendor/xiaomi/sm6375-common/Android.bp || true
-sed -i '/"vendor\.qti\.hardware\.vpp@1\.2"/d' vendor/xiaomi/sm6375-common/Android.bp || true
+# Fix all vendor.qti HAL references
+grep -rl 'vendor\.qti\.hardware' --include="Android.bp" --exclude-dir=out --exclude-dir=.repo vendor/xiaomi/ 2>/dev/null | xargs --no-run-if-empty sed -i '/\"vendor\.qti\.hardware\./d' || true
 
 source build/envsetup.sh
 lunch lineage_${DEVICE}-ap4a-userdebug
