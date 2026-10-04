@@ -54,7 +54,6 @@ done
 # Fix all vendor.qti HAL references
 grep -rl 'vendor\.qti\.hardware' --include="Android.bp" --exclude-dir=out --exclude-dir=.repo vendor/xiaomi/ 2>/dev/null | xargs --no-run-if-empty sed -i '/"vendor\.qti\.hardware\./d' || true
 
-# Allow missing dependencies to skip #remaining undefined modules
 export ALLOW_MISSING_DEPENDENCIES=true
 
 source build/envsetup.sh
