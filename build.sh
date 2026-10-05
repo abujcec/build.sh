@@ -52,7 +52,10 @@ for lib in libQSEEComAPI libcdsprpc libsensorslog libGPTEE_vendor libfastcvopt l
 done
 
 # Fix all vendor.qti HAL references
-grep -rl 'vendor\.qti\.hardware' --include="Android.bp" --exclude-dir=out --exclude-dir=.repo vendor/xiaomi/ 2>/dev/null | xargs --no-run-if-empty sed -i '/"vendor\.qti\.hardware\./d' || true
+for vlib in "vendor.qti.hardware.vpp@1.1" "vendor.qti.hardware.vpp@1.2" "vendor.qti.hardware.vpp@1.3" "vendor.qti.hardware.vpp@2.0"; do
+    sed -i "/\"${vlib}\"/d" vendor/xiaomi/veux/Android.bp || true
+    sed -i "/\"${vlib}\"/d" vendor/xiaomi/sm6375-common/Android.bp || true
+done
 
 export ALLOW_MISSING_DEPENDENCIES=true
 
